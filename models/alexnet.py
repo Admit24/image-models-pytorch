@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+from torchsummary import summary
 from utils import load_state_dict_from_url
 
 
@@ -26,10 +27,11 @@ class AlexNet(nn.Module):
             nn.ReLU(inplace=True),
             nn.Conv2d(384, 256, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
-            nn.Conv2d(256, 256, kernel_size=3,  padding=1),
+            nn.Conv2d(256, 256, kernel_size=3, padding=1),
+            nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=3, stride=2),
         )
-        self.avgpool = nn.AdaptiveAvgPool2d((6,6))
+        self.avgpool = nn.AdaptiveAvgPool2d((6, 6))
         self.classifier = nn.Sequential(
             nn.Dropout(),
             nn.Linear(256 * 6 * 6, 4096),
@@ -43,7 +45,7 @@ class AlexNet(nn.Module):
     def forward(self, x):
         out = self.features(x)
         out = self.avgpool(out)
-        out = torch.flatten(x, 1)
+        out = torch.flatten(out, 1)
         out = self.classifier(out)
         return out
 
@@ -66,5 +68,5 @@ def alexnet(pretrained=False, progress=True, **kwargs):
 
 
 if __name__ == "__main__":
-    model = alexnet()
-    print(model)
+    alexnet = alexnet()
+    summary(alexnet, (3, 224, 224))
