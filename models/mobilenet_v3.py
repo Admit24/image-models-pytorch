@@ -5,6 +5,9 @@ import torch.nn.functional as F
 
 __all__ = ['MobileNetV3', 'mobilenetv3']
 
+"""
+https://github.com/kuan-wang/pytorch-mobilenet-v3
+"""
 
 def conv_bn(inp, oup, stride, conv_layer=nn.Conv2d, norm_layer=nn.BatchNorm2d, nlin_layer=nn.ReLU):
     return nn.Sequential(
